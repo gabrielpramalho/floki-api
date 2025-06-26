@@ -11,16 +11,20 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { env } from './env'
+import { errorHandler } from './error-handler'
 import { authenticateWithPassword } from './http/routes/auth/authenticate-with-password'
 import { createAccount } from './http/routes/auth/create-account'
 import { getProfile } from './http/routes/auth/get-profile'
 import { requestPasswordRecover } from './http/routes/auth/request-password-recover'
 import { resetPassword } from './http/routes/auth/reset-password'
+import { createProject } from './http/routes/project/create-project'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
 app.setSerializerCompiler(serializerCompiler)
 app.setValidatorCompiler(validatorCompiler)
+
+app.setErrorHandler(errorHandler)
 
 app.register(fastifySwagger, {
   openapi: {
@@ -57,6 +61,8 @@ app.register(authenticateWithPassword)
 app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
+
+app.register(createProject)
 
 app.listen({ port: env.PORT }).then(() => {
   console.log(`HTTP running 🔥 at http://localhost:${env.PORT}`)
