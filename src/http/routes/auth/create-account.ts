@@ -1,3 +1,4 @@
+import { faker } from '@faker-js/faker'
 import { hash } from 'bcryptjs'
 import { FastifyInstance } from 'fastify'
 import { ZodTypeProvider } from 'fastify-type-provider-zod'
@@ -34,6 +35,8 @@ export async function createAccount(app: FastifyInstance) {
         throw new BadRequestError('User with this email already exists.')
       }
 
+      const avatarUrl = faker.image.avatar()
+
       const passwordHash = await hash(password, 6)
 
       await prisma.user.create({
@@ -41,6 +44,7 @@ export async function createAccount(app: FastifyInstance) {
           name,
           email,
           passwordHash,
+          avatarUrl,
         },
       })
 
