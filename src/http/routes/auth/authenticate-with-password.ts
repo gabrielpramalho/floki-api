@@ -58,7 +58,7 @@ export async function authenticateWithPassword(app: FastifyInstance) {
         },
       )
 
-      return reply.status(201).send({ token })
+      return reply.send({ token })
     },
   )
 }
